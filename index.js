@@ -1,4 +1,4 @@
-const Channel = require("./channel");
+const Channel = require("./worker-thread").Channel;
 const SampleWorker = require("./sample-worker");
 
 const sampleChannel = new Channel(40, () => {
