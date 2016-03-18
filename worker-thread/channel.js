@@ -7,7 +7,7 @@ class Channel extends EventEmitter {
   constructor(count, workerFactoryFunction) {
     super();
     this.running = true;
-    this.reqQueue = [];
+    this.workRequests = [];
     this.budy = false;
     this.workerFactory = workerFactoryFunction;
     this.workerCount = 0;
@@ -24,7 +24,7 @@ class Channel extends EventEmitter {
 
   addRequest(req) {
     const workRequest = new Request(req);
-    this.reqQueue.push(workRequest);
+    this.workRequests.push(workRequest);
     process.nextTick(() => this.consume());
     return workRequest;
   }
@@ -63,7 +63,7 @@ class Channel extends EventEmitter {
   }
 
   consume() {
-    while(this.running && this.reqQueue.length) {
+    while(this.running && this.workRequests.length > 0) {
       if (!this.run()) {
         break;
       }
@@ -75,7 +75,7 @@ class Channel extends EventEmitter {
     if (worker == null) {
       return false;
     }
-    const workerReq = this.reqQueue.shift();
+    const workerReq = this.workRequests.shift();
     worker.on("error", (err, data) => {
       workerReq.error(err);
     });
