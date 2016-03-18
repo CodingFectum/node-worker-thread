@@ -64,13 +64,13 @@ class Channel extends EventEmitter {
 
   consume(req) {
     while(this.running && this.reqQueue.length) {
-      if (!this.run(req)) {
+      if (!this.run()) {
         break;
       }
     }
   }
 
-  run(req) {
+  run() {
     const worker = this.createWorker();
     if (worker == null) {
       return false;
