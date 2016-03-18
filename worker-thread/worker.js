@@ -7,7 +7,7 @@ class Worker extends EventEmitter {
     super();
   }
 
-  process() {}
+  process(req) {}
   release() {
     this.removeAllListeners();
   }
