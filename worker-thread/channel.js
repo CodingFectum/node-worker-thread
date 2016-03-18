@@ -62,7 +62,7 @@ class Channel extends EventEmitter {
     }
   }
 
-  consume(req) {
+  consume() {
     while(this.running && this.reqQueue.length) {
       if (!this.run()) {
         break;
