@@ -71,10 +71,10 @@ class Channel extends EventEmitter {
 
   run() {
     const worker = this.createWorker();
-    if (worker == null) {
+    if (worker === null) {
       return false;
     }
-    const workerReq = this.workRequests.shift();
+
     worker.on("error", (err, req) => {
       this.emit("worker:error", err, req);
     });
@@ -88,8 +88,7 @@ class Channel extends EventEmitter {
       process.nextTick(() => this.consume());
     });
 
-
-    worker.process(workerReq);
+    worker.process(this.workRequests.shift());
 
     return true;
   }
