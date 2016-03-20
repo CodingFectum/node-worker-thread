@@ -29,7 +29,8 @@ class Channel extends EventEmitter {
   }
 
   accept() {
-    return !this.busy;
+    this.busy = false;
+    this.emit("accept");
   }
 
   createWorker() {
@@ -54,10 +55,7 @@ class Channel extends EventEmitter {
     this.workerCount--;
 
     if (oldBusy && this.workerCount < this.maxWorkerCount) {
-      process.nextTick(() => {
-        this.busy = false;
-        this.emit("accept");
-      });
+      process.nextTick(() => this.accept());
     }
   }
 
@@ -75,14 +73,8 @@ class Channel extends EventEmitter {
       return false;
     }
 
-    worker.on("error", (err, req) => {
-      this.emit("worker:error", err, req);
-    });
-
-    worker.on("success", req => {
-      this.emit("worker:success", req);
-    });
-
+    worker.on("error", (err, req) => this.emit("worker:error", err, req));
+    worker.on("success", req => this.emit("worker:success", req));
     worker.on("end", req => {
       this.releaseWorker(worker);
       process.nextTick(() => this.consume());
