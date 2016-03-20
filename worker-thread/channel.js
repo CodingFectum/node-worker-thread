@@ -75,10 +75,12 @@ class Channel extends EventEmitter {
       return false;
     }
     const workerReq = this.workRequests.shift();
-    worker.on("error", (err, data) => {
+    worker.on("error", (err, req) => {
+      this.emit("worker:error", err, req);
     });
 
-    worker.on("success", (err, data) => {
+    worker.on("success", req => {
+      this.emit("worker:success", req);
     });
 
     worker.on("end", req => {
