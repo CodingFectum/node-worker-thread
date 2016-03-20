@@ -1,6 +1,6 @@
 "use strict";
 
-const Request = require("./worker-thread").Request;
+const Request = require("../worker-thread").Request;
 
 class SampleRequest extends Request {
   constructor(body) {
