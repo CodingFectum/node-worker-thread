@@ -22,8 +22,7 @@ class Channel extends EventEmitter {
     this.running = true;
   }
 
-  addRequest(req) {
-    const workRequest = new Request(req);
+  addRequest(workRequest) {
     this.workRequests.push(workRequest);
     process.nextTick(() => this.consume());
     return workRequest;
@@ -77,11 +76,9 @@ class Channel extends EventEmitter {
     }
     const workerReq = this.workRequests.shift();
     worker.on("error", (err, data) => {
-      workerReq.error(err);
     });
 
     worker.on("success", (err, data) => {
-      workerReq.success(err, data);
     });
 
     worker.on("end", req => {

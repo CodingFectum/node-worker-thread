@@ -8,11 +8,18 @@ class SampleWorker extends Worker {
   }
 
   process(req) {
-    const time = Math.random() * 10000;
-    setTimeout(() => {
-      console.log(`${req.body.count} is done. - ${time}`);
-      this.emitSuccess("ok");
-    }, time);
+    req.execute();
+
+    req.on("success", () => {
+      this.emitSuccess(req);
+    });
+
+    req.on("error", err => {
+      this.emitError(err, req);
+    });
+
+    req.on("end", () => {
+    });
   }
 }
 

@@ -3,17 +3,17 @@
 const EventEmitter = require("eventemitter2").EventEmitter2;
 
 class Request extends EventEmitter {
-  constructor(body) {
+  constructor() {
     super();
-    this.body = body;
   }
 
-  success() {
+  execute() {}
+  emitSuccess() {
     this.emit("success");
     this.emit("end");
   }
 
-  error(err) {
+  emitError(err) {
     this.emit("error", err);
     this.emit("end");
   }
