@@ -2,7 +2,7 @@
   "name": "node-worker-thread",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "worker-thread/index.js",
   "scripts": {
     "start": "node example/main.js",
     "test": ""
