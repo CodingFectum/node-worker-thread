@@ -84,7 +84,7 @@ class Channel extends EventEmitter {
       workerReq.success(err, data);
     });
 
-    worker.on("complete", req => {
+    worker.on("end", req => {
       this.releaseWorker(worker);
       process.nextTick(() => this.consume());
     });

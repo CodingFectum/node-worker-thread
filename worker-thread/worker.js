@@ -15,14 +15,14 @@ class Worker extends EventEmitter {
   emitSuccess(req) {
     process.nextTick(() => {
       this.emit("success", req);
-      this.emit("complete", req);
+      this.emit("end", req);
     });
   }
 
   emitError(err, req) {
     process.nextTick(() => {
       this.emit("error", err, req);
-      this.emit("complete", req);
+      this.emit("end", req);
     });
   }
 }

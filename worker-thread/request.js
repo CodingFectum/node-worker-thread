@@ -10,12 +10,12 @@ class Request extends EventEmitter {
 
   success() {
     this.emit("success");
-    this.emit("complete");
+    this.emit("end");
   }
 
   error(err) {
     this.emit("error", err);
-    this.emit("complete");
+    this.emit("end");
   }
 }
 
