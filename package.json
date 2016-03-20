@@ -1,5 +1,5 @@
 {
-  "name": "node-worker-thread",
+  "name": "worker-thread",
   "version": "0.1.0",
   "description": "",
   "main": "worker-thread/index.js",
