@@ -1,6 +1,6 @@
 "use strict";
 
-const Request = require("../dist").Request;
+const Request = require("../lib").Request;
 
 class SampleRequest extends Request {
   constructor(body) {

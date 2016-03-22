@@ -1,6 +1,6 @@
 "use strict";
 
-const Worker = require("../dist").Worker;
+const Worker = require("../lib").Worker;
 
 class SampleWorker extends Worker {
   constructor() {

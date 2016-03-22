@@ -1,4 +1,4 @@
-const Channel = require("../dist").Channel;
+const Channel = require("../lib").Channel;
 
 const SampleWorker = require("./sample-worker");
 const SampleRequest = require("./sample-request");
