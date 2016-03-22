@@ -1,7 +1,7 @@
 {
   "name": "worker-thread",
   "description": "Worker Thread Pattern for Node.js",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "bugs": {
     "url": "https://github.com/70-10/node-worker-thread/issues"
   },
