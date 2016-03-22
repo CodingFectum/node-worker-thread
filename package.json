@@ -2,7 +2,7 @@
   "name": "worker-thread",
   "version": "0.1.1",
   "description": "Worker Thread Pattern for Node.js",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "start": "node example/main.js",
     "build": "babel src --out-dir lib  --source-maps-inline",
