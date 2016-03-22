@@ -1,27 +1,10 @@
 {
   "name": "worker-thread",
-  "version": "0.1.1",
   "description": "Worker Thread Pattern for Node.js",
-  "main": "lib/index.js",
-  "scripts": {
-    "start": "node example/main.js",
-    "build": "babel src --out-dir lib  --source-maps-inline",
-    "build:watch": "babel src --out-dir lib --watch --source-maps-inline",
-    "test": "",
-    "clean": "del lib",
-    "prepublish": "npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/70-10/node-worker-thread.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "version": "0.1.1",
   "bugs": {
     "url": "https://github.com/70-10/node-worker-thread/issues"
   },
-  "homepage": "https://github.com/70-10/node-worker-thread#readme",
   "dependencies": {
     "eventemitter2": "1.0.0"
   },
@@ -34,5 +17,21 @@
   },
   "files": [
     "lib"
-  ]
+  ],
+  "homepage": "https://github.com/70-10/node-worker-thread#readme",
+  "keywords": [],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/70-10/node-worker-thread.git"
+  },
+  "scripts": {
+    "build": "babel src --out-dir lib  --source-maps-inline",
+    "build:watch": "babel src --out-dir lib --watch --source-maps-inline",
+    "clean": "del lib",
+    "prepublish": "npm run build",
+    "start": "node example/main.js",
+    "test": ""
+  }
 }
