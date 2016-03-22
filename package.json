@@ -8,7 +8,8 @@
     "build": "babel src --out-dir lib  --source-maps-inline",
     "build:watch": "babel src --out-dir lib --watch --source-maps-inline",
     "test": "",
-    "clean": "del lib"
+    "clean": "del lib",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
