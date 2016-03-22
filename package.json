@@ -2,10 +2,12 @@
   "name": "worker-thread",
   "version": "0.1.1",
   "description": "Worker Thread Pattern for Node.js",
-  "main": "worker-thread/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "start": "node example/main.js",
-    "test": ""
+    "build": "babel src -d dist",
+    "test": "",
+    "clean": "del dist"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,10 @@
   "homepage": "https://github.com/70-10/node-worker-thread#readme",
   "dependencies": {
     "eventemitter2": "1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "6.6.5",
+    "babel-preset-es2015": "6.6.0",
+    "del-cli": "0.2.0"
   }
 }

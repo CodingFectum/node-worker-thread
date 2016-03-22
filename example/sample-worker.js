@@ -1,6 +1,6 @@
 "use strict";
 
-const Worker = require("../worker-thread").Worker;
+const Worker = require("../dist").Worker;
 
 class SampleWorker extends Worker {
   constructor() {
