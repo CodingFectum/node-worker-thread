@@ -1,8 +1,6 @@
-"use strict";
+import { EventEmitter2 } from "eventemitter2";
 
-const EventEmitter = require("eventemitter2").EventEmitter2;
-
-class Worker extends EventEmitter {
+export default class Worker extends EventEmitter2 {
   constructor() {
     super();
   }
@@ -26,5 +24,3 @@ class Worker extends EventEmitter {
     });
   }
 }
-
-module.exports = Worker;

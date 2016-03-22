@@ -1,9 +1,6 @@
-"use strict";
+import { EventEmitter2 } from "eventemitter2";
 
-const EventEmitter = require("eventemitter2").EventEmitter2;
-const Request = require("./request");
-
-class Channel extends EventEmitter {
+export default class Channel extends EventEmitter2 {
   constructor(count, workerFactoryFunction) {
     super();
     this.running = true;
@@ -85,5 +82,3 @@ class Channel extends EventEmitter {
     return true;
   }
 }
-
-module.exports = Channel;
