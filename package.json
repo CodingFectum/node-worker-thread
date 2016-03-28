@@ -42,6 +42,6 @@
     "prepublish": "npm run build",
     "report": "nyc report --reporter=html",
     "start": "node example/main.js",
-    "test": "nyc ava"
+    "test": "nyc ava && npm run report"
   }
 }
