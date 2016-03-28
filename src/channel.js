@@ -5,7 +5,7 @@ export default class Channel extends EventEmitter2 {
     super();
     this.running = true;
     this.workRequests = [];
-    this.budy = false;
+    this.busy = false;
     this.workerFactory = workerFactoryFunction;
     this.workerCount = 0;
     this.maxWorkerCount = count;
