@@ -5,7 +5,7 @@ export default class Channel extends EventEmitter2 {
     super();
     this.running = true;
     this.workRequests = [];
-    this.busy = false;
+    this.isBusy = false;
     this.workerFactory = workerFactoryFunction;
     this.workerCount = 0;
     this.maxWorkerCount = count;
@@ -26,12 +26,17 @@ export default class Channel extends EventEmitter2 {
   }
 
   accept() {
-    this.busy = false;
+    this.isBusy = false;
     this.emit("accept");
   }
 
+  busy() {
+    this.isBusy = true;
+    this.emit("busy");
+  }
+
   createWorker() {
-    if (this.busy) {
+    if (this.isBusy) {
       return null;
     }
 
@@ -39,15 +44,14 @@ export default class Channel extends EventEmitter2 {
     this.workerCount++;
 
     if (this.workerCount >= this.maxWorkerCount) {
-      this.busy = true;
-      process.nextTick(() => this.emit("busy"));
+      this.busy();
     }
 
     return worker;
   }
 
   releaseWorker(worker) {
-    const oldBusy = this.busy;
+    const oldBusy = this.isBusy;
     worker.release();
     this.workerCount--;
 
