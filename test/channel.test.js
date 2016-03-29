@@ -11,3 +11,14 @@ test("initialize", t => {
   t.ok(channel.maxWorkerCount === 10);
   channel.workerFactory();
 });
+
+test("pause & resume", t => {
+  const channel = new Channel(10, () => t.ok("factory" === "factory"));
+  t.ok(channel.running === true);
+
+  channel.pause();
+  t.ok(channel.running === false);
+
+  channel.resume();
+  t.ok(channel.running === true);
+});
