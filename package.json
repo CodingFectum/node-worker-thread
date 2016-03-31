@@ -1,7 +1,7 @@
 {
   "name": "worker-thread",
   "description": "Worker Thread Pattern for Node.js",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "ava": {
     "files": [
       "test/**/*.test.js"
