@@ -1,27 +1,27 @@
 const workerthread = require("../lib");
 const SampleRequest = require("./sample-request");
 
-const channel = new workerthread.Channel(1);
+const channel = new workerthread.Channel(30);
 channel.on("busy", () => console.log("SampleChannel is busy"));
 channel.on("accept", () => console.log("SampleChannel is accept"));
-const request1 = new SampleRequest({count: 1});
-const request2 = new SampleRequest({count: 2});
 
-channel.addRequest(request1);
-channel.addRequest(request2);
-
-request1.on("done", err => {
+channel.on("done", (err, req) => {
   if (err) {
     console.log(err);
-  } else {
-    console.log("request1 success");
   }
+  console.log(`Channel#done - ${req.body.count}`);
 });
 
-request2.on("done", err => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log("request2 success");
-  }
-});
+for (var i = 0; i < 100; i++) {
+  var req = new SampleRequest({count: i});
+  channel.addRequest(req);
+
+  req.on("done", err => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    console.log(`request done - ${req.body.count}`);
+  });
+}

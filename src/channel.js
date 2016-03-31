@@ -77,6 +77,7 @@ export default class Channel extends EventEmitter2 {
 
     worker.on("done", (err, req) => {
       this.releaseWorker(worker);
+      this.emit("done", err, req);
       process.nextTick(() => this.consume());
     });
 

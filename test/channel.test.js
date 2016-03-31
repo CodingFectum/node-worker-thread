@@ -1,5 +1,7 @@
 import test from "ava";
 import Channel from "../src/channel";
+import SampleRequest from "./sample-request";
+
 
 test("initialize", t => {
   const channel = new Channel(10, () => t.ok("factory" === "factory"));
@@ -77,4 +79,17 @@ test.cb("createWorker max count", t => {
     t.ok(worker.result === true);
     t.ok(worker.test === "ok");
   }
+});
+
+test.cb("addRequest, consume and run", t => {
+  const channel = new Channel(1);
+  const request  = new SampleRequest();
+  channel.on("done", (err, req) => {
+    t.ok(err === null);
+    t.ok(req.isError === false);
+    t.end();
+  });
+
+  const result = channel.addRequest(request);
+  t.ok(result.isError === false);
 });
