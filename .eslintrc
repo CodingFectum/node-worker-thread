@@ -14,15 +14,9 @@ rules:
   new-cap: 2
   quotes: [2, "double"]
   semi: [2, "always"]
-
-  # 設定したい
-  # max-depth: [2, 2]
-  # max-nested-callbacks: [2, 3]
-  # max-params: [2, 3]
 env:
   es6: true
   browser: true
-# extends: 'eslint:recommended'
 ecmaFeatures:
   jsx: true
   experimentalObjectRestSpread: true
