@@ -1,21 +1,38 @@
 import test from "ava";
 import Worker from "../src/worker";
+import SampleRequest from "./sample-request";
 
-test("emitSuccess", t => {
+test.cb("done", t => {
   const worker = new Worker();
-  worker.on("success", req => t.ok(req === "test"));
-  worker.on("end", req => t.ok(req === "test"));
-
-  worker.emitSuccess("test");
-});
-
-test("emitError", t => {
-  const worker = new Worker();
-  worker.on("error", (err, req) => {
+  worker.on("done", (err, req) => {
     t.ok(err === null);
     t.ok(req === "test");
+    t.end();
   });
-  worker.on("end", req => t.ok(req === "test"));
 
-  worker.emitError(null, "test");
+  worker.done(null, "test");
+});
+
+test.cb("process no error", t => {
+  const request = new SampleRequest(false);
+  const worker = new Worker();
+
+  worker.on("done", (err, req) => {
+    t.ok(err === null);
+    t.end();
+  });
+
+  worker.process(request);
+});
+
+test.cb("process error", t => {
+  const request = new SampleRequest(true);
+  const worker = new Worker();
+
+  worker.on("done", (err, req) => {
+    t.ok(err === "error");
+    t.end();
+  });
+
+  worker.process(request);
 });

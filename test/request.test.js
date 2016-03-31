@@ -1,18 +1,22 @@
 import test from "ava";
 import Request from "../src/request";
 
-test("emitSuccess", t => {
+test.cb("done no error", t => {
   const request = new Request();
-  request.on("success", () => t.ok("success" === "success"));
-  request.on("end", () => t.ok("end" === "end"));
+  request.on("done", err => {
+    t.ok(err === null);
+    t.end();
+  });
 
-  request.emitSuccess();
+  request.done(null);
 });
 
-test("emitError", t => {
+test.cb("done error", t => {
   const request = new Request();
-  request.on("error", err => t.ok(err === "error"));
-  request.on("end", () => t.ok("end" === "end"));
+  request.on("done", err => {
+    t.ok(err.error === true);
+    t.end();
+  });
 
-  request.emitError("error");
+  request.done({error: true});
 });

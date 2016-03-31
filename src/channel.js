@@ -1,7 +1,8 @@
 import { EventEmitter2 } from "eventemitter2";
+import Worker from "./worker";
 
 export default class Channel extends EventEmitter2 {
-  constructor(count, workerFactoryFunction) {
+  constructor(count, workerFactoryFunction=()=> new Worker()) {
     super();
     this.running = true;
     this.workRequests = [];
@@ -74,9 +75,7 @@ export default class Channel extends EventEmitter2 {
       return false;
     }
 
-    worker.on("error", (err, req) => this.emit("worker:error", err, req));
-    worker.on("success", req => this.emit("worker:success", req));
-    worker.on("end", req => {
+    worker.on("done", (err, req) => {
       this.releaseWorker(worker);
       process.nextTick(() => this.consume());
     });

@@ -12,7 +12,7 @@ class SampleRequest extends Request {
     const time = Math.random() * 10000;
     setTimeout(() => {
       console.log(`${this.body.count} is done. - ${time}`);
-      this.emitSuccess();
+      this.done(null);
     }, time);
   }
 }

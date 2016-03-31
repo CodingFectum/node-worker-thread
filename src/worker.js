@@ -5,22 +5,17 @@ export default class Worker extends EventEmitter2 {
     super();
   }
 
-  process(req) {}
+  process(req) {
+    req.execute();
+    req.on("done", err => {
+      process.nextTick(() => this.done(err, req));
+    });
+  }
   release() {
     this.removeAllListeners();
   }
 
-  emitSuccess(req) {
-    process.nextTick(() => {
-      this.emit("success", req);
-      this.emit("end", req);
-    });
-  }
-
-  emitError(err, req) {
-    process.nextTick(() => {
-      this.emit("error", err, req);
-      this.emit("end", req);
-    });
+  done(err, req) {
+    this.emit("done", err, req);
   }
 }

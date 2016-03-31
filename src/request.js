@@ -6,13 +6,7 @@ export default class Request extends EventEmitter2 {
   }
 
   execute() {}
-  emitSuccess() {
-    this.emit("success");
-    this.emit("end");
-  }
-
-  emitError(err) {
-    this.emit("error", err);
-    this.emit("end");
+  done(err) {
+    process.nextTick(() => this.emit("done", err));
   }
 }
