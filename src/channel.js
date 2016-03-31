@@ -1,11 +1,12 @@
 import { EventEmitter2 } from "eventemitter2";
+import Worker from "./worker";
 
 export default class Channel extends EventEmitter2 {
-  constructor(count, workerFactoryFunction) {
+  constructor(count, workerFactoryFunction=()=> new Worker()) {
     super();
     this.running = true;
     this.workRequests = [];
-    this.budy = false;
+    this.isBusy = false;
     this.workerFactory = workerFactoryFunction;
     this.workerCount = 0;
     this.maxWorkerCount = count;
@@ -26,12 +27,17 @@ export default class Channel extends EventEmitter2 {
   }
 
   accept() {
-    this.busy = false;
+    this.isBusy = false;
     this.emit("accept");
   }
 
+  busy() {
+    this.isBusy = true;
+    this.emit("busy");
+  }
+
   createWorker() {
-    if (this.busy) {
+    if (this.isBusy) {
       return null;
     }
 
@@ -39,15 +45,14 @@ export default class Channel extends EventEmitter2 {
     this.workerCount++;
 
     if (this.workerCount >= this.maxWorkerCount) {
-      this.busy = true;
-      process.nextTick(() => this.emit("busy"));
+      this.busy();
     }
 
     return worker;
   }
 
   releaseWorker(worker) {
-    const oldBusy = this.busy;
+    const oldBusy = this.isBusy;
     worker.release();
     this.workerCount--;
 
@@ -70,10 +75,9 @@ export default class Channel extends EventEmitter2 {
       return false;
     }
 
-    worker.on("error", (err, req) => this.emit("worker:error", err, req));
-    worker.on("success", req => this.emit("worker:success", req));
-    worker.on("end", req => {
+    worker.on("done", (err, req) => {
       this.releaseWorker(worker);
+      this.emit("done", err, req);
       process.nextTick(() => this.consume());
     });
 

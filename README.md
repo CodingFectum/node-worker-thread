@@ -12,43 +12,33 @@ $ npm install worker-thread
 ### Channel
 
 ```javascript
-const Channel = require("worker-thread").Channel;
-const SampleWorker = require("./sample-worker");
+const workerthread = require("worker-thread").Channel;
 const SampleRequest = require("./sample-request");
 
-const sampleChannel = new Channel(40, () => new SampleWorker());
+const channel = new Channel(30);
+channel.on("busy", () => console.log("SampleChannel is busy"));
+channel.on("accept", () => console.log("SampleChannel is accept"));
 
-sampleChannel.on("busy", () => console.log("SampleChannel is busy"));
-sampleChannel.on("accept", () => console.log("SampleChannel is accept"));
-
-sampleChannel.on("worker:success", req => console.log(`${req.body.count} is success`));
-sampleChannel.on("worker:error", (err, req) => console.error(err, req));
+channel.on("done", (err, req) => {
+  if (err) {
+    console.log(err);
+  }
+  console.log(`Channel#done - ${req.body.count}`);
+});
 
 for (var i = 0; i < 100; i++) {
-  sampleChannel.addRequest(new SampleRequest({count: i}));
+  var req = new SampleRequest({count: i});
+  channel.addRequest(req);
+
+  req.on("done", err => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    console.log(`request done - ${req.body.count}`);
+  });
 }
-```
-
-### Worker
-
-```javascript
-const Worker = require("worker-thread").Worker;
-
-class SampleWorker extends Worker {
-  constructor() {
-    super();
-  }
-
-  process(req) {
-    req.execute();
-
-    req.on("success", () => this.emitSuccess(req));
-    req.on("error", err => this.emitError(err, req));
-    req.on("end", () => {});
-  }
-}
-
-module.exports = SampleWorker;
 ```
 
 ### Request
@@ -66,7 +56,7 @@ class SampleRequest extends Request {
     const time = Math.random() * 10000;
     setTimeout(() => {
       console.log(`${this.body.count} is done. - ${time}`);
-      this.emitSuccess();
+      this.done(null);
     }, time);
   }
 }

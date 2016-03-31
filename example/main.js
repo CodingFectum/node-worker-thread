@@ -1,16 +1,27 @@
-const Channel = require("../lib").Channel;
-
-const SampleWorker = require("./sample-worker");
+const workerthread = require("../lib");
 const SampleRequest = require("./sample-request");
 
-const sampleChannel = new Channel(40, () => new SampleWorker());
+const channel = new workerthread.Channel(30);
+channel.on("busy", () => console.log("SampleChannel is busy"));
+channel.on("accept", () => console.log("SampleChannel is accept"));
 
-sampleChannel.on("busy", () => console.log("SampleChannel is busy"));
-sampleChannel.on("accept", () => console.log("SampleChannel is accept"));
-
-sampleChannel.on("worker:success", req => console.log(`${req.body.count} is success`));
-sampleChannel.on("worker:error", (err, req) => console.error(err, req));
+channel.on("done", (err, req) => {
+  if (err) {
+    console.log(err);
+  }
+  console.log(`Channel#done - ${req.body.count}`);
+});
 
 for (var i = 0; i < 100; i++) {
-  sampleChannel.addRequest(new SampleRequest({count: i}));
+  var req = new SampleRequest({count: i});
+  channel.addRequest(req);
+
+  req.on("done", err => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    console.log(`request done - ${req.body.count}`);
+  });
 }
