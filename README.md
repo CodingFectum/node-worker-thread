@@ -12,7 +12,7 @@ $ npm install worker-thread
 ### Channel
 
 ```javascript
-const workerthread = require("worker-thread").Channel;
+const Channel = require("worker-thread").Channel;
 const SampleRequest = require("./sample-request");
 
 const channel = new Channel(30);
