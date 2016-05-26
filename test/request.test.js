@@ -4,7 +4,7 @@ import Request from "../src/request";
 test.cb("done no error", t => {
   const request = new Request();
   request.on("done", err => {
-    t.ok(err === null);
+    t.truthy(err === null);
     t.end();
   });
 
@@ -14,7 +14,7 @@ test.cb("done no error", t => {
 test.cb("done error", t => {
   const request = new Request();
   request.on("done", err => {
-    t.ok(err.error === true);
+    t.truthy(err.error === true);
     t.end();
   });
 

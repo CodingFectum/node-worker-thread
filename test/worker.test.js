@@ -5,8 +5,8 @@ import SampleRequest from "./sample-request";
 test.cb("done", t => {
   const worker = new Worker();
   worker.on("done", (err, req) => {
-    t.ok(err === null);
-    t.ok(req === "test");
+    t.truthy(err === null);
+    t.truthy(req === "test");
     t.end();
   });
 
@@ -18,7 +18,7 @@ test.cb("process no error", t => {
   const worker = new Worker();
 
   worker.on("done", (err, req) => {
-    t.ok(err === null);
+    t.truthy(err === null);
     t.end();
   });
 
@@ -30,7 +30,7 @@ test.cb("process error", t => {
   const worker = new Worker();
 
   worker.on("done", (err, req) => {
-    t.ok(err === "error");
+    t.truthy(err === "error");
     t.end();
   });
 
