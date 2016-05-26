@@ -71,7 +71,7 @@ export default class Channel extends EventEmitter2 {
 
   run() {
     const worker = this.createWorker();
-    if (worker === null) {
+    if (!worker) {
       return false;
     }
 
