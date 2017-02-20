@@ -1,5 +1,11 @@
-import Channel from "./channel";
-import Request from "./request";
-import Worker from "./worker";
+"use strict";
 
-module.exports = {Channel, Request, Worker};
+const Channel = require("./channel");
+
+module.exports = {
+  createChannel,
+};
+
+function createChannel(worker, count) {
+  return new Channel(worker, count);
+}

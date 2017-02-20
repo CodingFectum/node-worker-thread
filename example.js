@@ -1,21 +1,4 @@
-worker-thread
-=============
-
-Worker Thread Pattern for Node.js
-
-```
-$ npm install worker-thread
-```
-
-## Required
-
-- Node
-  - version >=4
-
-## Sample
-
-```javascript
-const wt = require("worker-thread");
+const wt = require("./src");
 
 function twiceWorker(n) {
   return new Promise(r => {
@@ -42,5 +25,3 @@ let i = 0;
 while(i < 10) {
   ch.add(i++);
 }
-
-```
