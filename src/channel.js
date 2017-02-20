@@ -1,88 +1,59 @@
-import { EventEmitter2 } from "eventemitter2";
-import Worker from "./worker";
+"use strict";
 
-export default class Channel extends EventEmitter2 {
-  constructor(count, workerFactoryFunction=()=> new Worker()) {
+const EventEmitter = require("eventemitter2").EventEmitter2;
+const request = require("./request");
+
+class Channel extends EventEmitter {
+  constructor(workerFn, workerMax) {
     super();
-    this.running = true;
-    this.workRequests = [];
-    this.isBusy = false;
-    this.workerFactory = workerFactoryFunction;
-    this.workerCount = 0;
-    this.maxWorkerCount = count;
+    this.worker = workerFn;
+    this.workerMax = workerMax;
+    this.requests = [];
+    this.isRunning = true;
+    this.currentCount = 0;
   }
 
-  pause() {
-    this.running = false;
-  }
-
-  resume() {
-    this.running = true;
-  }
-
-  addRequest(workRequest) {
-    this.workRequests.push(workRequest);
-    process.nextTick(() => this.consume());
-    return workRequest;
-  }
-
-  accept() {
-    this.isBusy = false;
-    this.emit("accept");
-  }
-
-  busy() {
-    this.isBusy = true;
-    this.emit("busy");
-  }
-
-  createWorker() {
-    if (this.isBusy) {
-      return null;
+  execute() {
+    if(!this.isRunning) {
+      return;
     }
 
-    const worker = this.workerFactory();
-    this.workerCount++;
-
-    if (this.workerCount >= this.maxWorkerCount) {
-      this.busy();
+    const isBusy = this.currentCount >= this.workerMax;
+    if(isBusy) {
+      setImmediate(() => this.execute());
+      return;
     }
 
-    return worker;
-  }
-
-  releaseWorker(worker) {
-    const oldBusy = this.isBusy;
-    worker.release();
-    this.workerCount--;
-
-    if (oldBusy && this.workerCount < this.maxWorkerCount) {
-      process.nextTick(() => this.accept());
-    }
-  }
-
-  consume() {
-    while(this.running && this.workRequests.length > 0) {
-      if (!this.run()) {
-        break;
-      }
-    }
-  }
-
-  run() {
-    const worker = this.createWorker();
-    if (!worker) {
-      return false;
+    if(this.requests.length > 0) {
+      this.currentCount++;
+      const task = this.requests.shift();
+      request(this.worker, task).then(r => this.done(null, r)).catch(this.done);
     }
 
-    worker.on("done", (err, req) => {
-      this.releaseWorker(worker);
-      this.emit("done", err, req);
-      process.nextTick(() => this.consume());
-    });
+    if(this.currentCount <= 0) {
+      this.stop();
+      return;
+    }
 
-    worker.process(this.workRequests.shift());
-
-    return true;
+    setImmediate(() => this.execute());
   }
+
+  stop() {
+    this.isRunning = false;
+    this.emit("stop");
+  }
+
+  add(args) {
+    this.isRunning = true;
+    this.requests.push(args);
+    setImmediate(() => this.execute());
+  }
+
+  done(err, value) {
+    this.emit("done", err, value);
+    this.currentCount--;
+  }
+
 }
+
+module.exports = Channel;
