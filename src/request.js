@@ -1,6 +1,7 @@
 "use strict";
 
 const co = require("co");
+const isGenerator = require("is-generator-function");
 
 module.exports = (fn, args) => {
   if (isGenerator(fn)) {
@@ -9,10 +10,3 @@ module.exports = (fn, args) => {
   }
   return Promise.resolve(fn(args));
 };
-
-function isGenerator(fn) {
-  if (!(typeof fn == "function")) {
-    return false;
-  }
-  return fn.constructor.name == "GeneratorFunction";
-}
