@@ -27,7 +27,10 @@ class Channel extends EventEmitter {
     if (this.requests.length > 0) {
       this.currentCount++;
       const task = this.requests.shift();
-      request(this.worker, task).then(r => this.done(null, r)).catch(this.done);
+      request
+        .execute(this.worker, task)
+        .then(r => this.done(null, r))
+        .catch(this.done);
     }
 
     if (this.currentCount <= 0) {
