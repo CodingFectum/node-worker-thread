@@ -3,7 +3,7 @@ const wt = require("../src");
 
 const twice = n => n * 2;
 const twicePromise = n => Promise.resolve(n * 2);
-function *twiceGenerator(num) {
+function* twiceGenerator(num) {
   return yield twicePromise(num);
 }
 

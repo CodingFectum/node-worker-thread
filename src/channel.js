@@ -14,23 +14,23 @@ class Channel extends EventEmitter {
   }
 
   execute() {
-    if(!this.isRunning) {
+    if (!this.isRunning) {
       return;
     }
 
     const isBusy = this.currentCount >= this.workerMax;
-    if(isBusy) {
+    if (isBusy) {
       setImmediate(() => this.execute());
       return;
     }
 
-    if(this.requests.length > 0) {
+    if (this.requests.length > 0) {
       this.currentCount++;
       const task = this.requests.shift();
       request(this.worker, task).then(r => this.done(null, r)).catch(this.done);
     }
 
-    if(this.currentCount <= 0) {
+    if (this.currentCount <= 0) {
       this.stop();
       return;
     }
@@ -53,7 +53,6 @@ class Channel extends EventEmitter {
     this.emit("done", err, value);
     this.currentCount--;
   }
-
 }
 
 module.exports = Channel;

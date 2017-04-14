@@ -2,7 +2,7 @@ const wt = require("./src");
 
 function twiceWorker(n) {
   return new Promise(r => {
-    const second = Math.floor((Math.random() * 6));
+    const second = Math.floor(Math.random() * 6);
     setTimeout(() => r(`delay ${second}s: ${n}`), second * 1000);
   });
 }
@@ -22,6 +22,6 @@ ch.on("stop", () => {
 });
 
 let i = 0;
-while(i < 10) {
+while (i < 10) {
   ch.add(i++);
 }
