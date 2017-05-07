@@ -26,6 +26,7 @@ test.cb("function", t => {
 test("stop", t => {
   const sampleChannel = wt.createChannel(twicePromise, 2);
   sampleChannel.stop();
+  t.pass();
 });
 
 test.cb("promise", t => {
