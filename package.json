@@ -18,7 +18,7 @@
   "devDependencies": {
     "ava": "^0.19.1",
     "eslint": "3.19.0",
-    "eslint-config-prettier": "^1.7.0",
+    "eslint-config-prettier": "^2.0.0",
     "eslint-plugin-node": "4.2.2",
     "eslint-plugin-prettier": "^2.0.1",
     "husky": "^0.13.3",
@@ -45,11 +45,10 @@
   "scripts": {
     "start": "node example/main.js",
     "clean": "rimraf coverage .nyc_output",
-    "fmt": "prettier --write ./{src,test}/**/*.js",
     "lint": "eslint --fix ./{src,test}/**/*.js",
     "report": "nyc report --reporter=html",
     "test": "nyc ava",
-    "test:coverage": "run-s clean fmt lint test report",
+    "test:coverage": "run-s clean lint test report",
     "precommit": "lint-staged",
     "prepush": "ava"
   },
