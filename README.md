@@ -17,14 +17,14 @@ $ npm install worker-thread
 ```javascript
 const wt = require("worker-thread");
 
-function twiceWorker(n) {
+function worker(n) {
   return new Promise(r => {
     const second = Math.floor((Math.random() * 6));
     setTimeout(() => r(`delay ${second}s: ${n}`), second * 1000);
   });
 }
 
-const ch = wt.createChannel(twiceWorker, 10);
+const ch = wt.createChannel(worker, 10);
 
 ch.on("done", (err, result) => {
   if (err) {
