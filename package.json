@@ -45,7 +45,7 @@
   "scripts": {
     "start": "node example/main.js",
     "clean": "rimraf coverage .nyc_output",
-    "lint": "eslint --fix ./{src,test}/**/*.js",
+    "lint": "eslint --fix src test",
     "report": "nyc report --reporter=html",
     "test": "nyc ava",
     "test:coverage": "run-s clean lint test report",
