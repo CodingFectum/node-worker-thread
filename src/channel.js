@@ -10,7 +10,7 @@ class Channel extends EventEmitter {
     this.workerMax = workerMax;
     this.requests = [];
     this.isRunning = true;
-    this.currentCount = 0;
+    this.executionCount = 0;
   }
 
   execute() {
@@ -18,14 +18,13 @@ class Channel extends EventEmitter {
       return;
     }
 
-    const isBusy = this.currentCount >= this.workerMax;
-    if (isBusy) {
+    if (this.isBusy()) {
       setImmediate(() => this.execute());
       return;
     }
 
     if (this.requests.length > 0) {
-      this.currentCount++;
+      this.executionCount++;
       const task = this.requests.shift();
       request
         .execute(this.worker, task)
@@ -33,12 +32,16 @@ class Channel extends EventEmitter {
         .catch(this.done);
     }
 
-    if (this.currentCount <= 0) {
+    if (this.executionCount <= 0) {
       this.stop();
       return;
     }
 
     setImmediate(() => this.execute());
+  }
+
+  isBusy() {
+    return this.executionCount >= this.workerMax;
   }
 
   stop() {
@@ -54,7 +57,7 @@ class Channel extends EventEmitter {
 
   done(err, value) {
     this.emit("done", err, value);
-    this.currentCount--;
+    this.executionCount--;
   }
 }
 
