@@ -3,12 +3,12 @@ jobs:
   build:
     working_directory: /worker-thread
     docker:
-      - image: circleci/node:4
+      - image: node:4-alpine
     steps:
       - checkout
       - run:
           name: update npm
-          command: sudo npm install -g npm@latest
+          command: npm install -g npm@latest
       - run:
           name: npm install
           command: npm install
