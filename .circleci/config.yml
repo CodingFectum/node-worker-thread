@@ -7,9 +7,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: update npm
-          command: npm install -g npm@latest
-      - run:
           name: npm install
           command: npm install
       - run:
