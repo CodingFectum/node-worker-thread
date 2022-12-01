@@ -1,5 +1,5 @@
 {
-  "name": "worker-thread",
+  "name": "worker_threads",
   "description": "Worker Thread Pattern for Node.js",
   "version": "1.1.0",
   "ava": {
